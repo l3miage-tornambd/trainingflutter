@@ -1,39 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:projects/models/CheckList.dart';
+import 'package:provider/provider.dart';
 
-class ChecklistItemsPage extends StatefulWidget {
-  final CheckList checklist;
+import '../models/CheckListNotifier.dart';
 
-  const ChecklistItemsPage({Key? key, required this.checklist}) : super(key: key);
+class CheckListItemPage extends StatelessWidget {
+  final CheckList checkList;
 
-  @override
-  State<ChecklistItemsPage> createState() => _ChecklistItemsPageState();
-}
+  CheckListItemPage({required this.checkList});
 
-
-class _ChecklistItemsPageState extends State<ChecklistItemsPage> {
   @override
   Widget build(BuildContext context) {
+
+    final checkListNotifier = context.watch<CheckListNotifier>();
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.checklist.title),
-      ),
-      body: ListView.builder(
-        itemCount: widget.checklist.items.length,
+      appBar: AppBar(title: Text(checkList.title)),
+      body: ReorderableListView.builder(
+        itemCount: checkList.items.length,
+        onReorder: (oldIndex, newIndex) {
+          checkListNotifier.reorderItems(checkList, oldIndex, newIndex);
+        },
         itemBuilder: (context, index) {
-          final item = widget.checklist.items[index];
-          return CheckboxListTile(
-            title: Text(item.description),
-            subtitle: Text(item.category),
-            value: item.isDone,
-            onChanged: (value) {
-              setState(() {
-                item.isDone = value ?? false;
-              });
-            },
-          );
+          final item = checkList.items[index];
+          return buildItem(checkListNotifier, index, item, checkList);
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          checkListNotifier.addItem(
+            checkList,
+            Item(
+              id: ((checkList.id * 100) + checkList.items.length + 1),
+              description: 'New item',
+              category: 'Category',)
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget buildItem(CheckListNotifier checkListNotifier, int index, Item item, CheckList checkList) {
+    return CheckboxListTile(
+      key: ValueKey(item.id), // Nécessaire pour ReorderableListView
+      title: Text(item.description),
+      subtitle: Text(item.category),
+      value: item.isDone,
+      onChanged: (bool? value) {
+        checkListNotifier.toggleItem(checkList, item);
+      },
     );
   }
 }

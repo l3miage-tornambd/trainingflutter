@@ -1,41 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:projects/models/CheckListNotifier.dart';
 import 'package:projects/pages/CheckListItemPage.dart';
-import '../models/CheckList.dart';
-import '../widgets/AddItemDialog.dart';
+import 'package:provider/provider.dart';
 
 class CheckListsPage extends StatefulWidget {
 
   final String title;
 
   CheckListsPage({super.key, required this.title});
-
-  final List<CheckList> checkList = [
-    CheckList(
-      title: 'Checklist 1',
-      items: [
-        ChecklistItem(description: 'Item 1', category: 'Categorie A'),
-        ChecklistItem(description: 'Item 2', category: 'Categorie B'),
-        ChecklistItem(description: 'Item 3', category: 'Categorie C'),
-        ChecklistItem(description: 'Item 4', category: 'Categorie D'),
-        ChecklistItem(description: 'Item 5', category: 'Categorie A'),
-        ChecklistItem(description: 'Item 6', category: 'Categorie B'),
-        ChecklistItem(description: 'Item 7', category: 'Categorie C'),
-        ChecklistItem(description: 'Item 8', category: 'Categorie D'),
-        ChecklistItem(description: 'Item 9', category: 'Categorie A'),
-      ],
-    ),
-    CheckList(
-      title: 'Checklist 2',
-      items: [
-        ChecklistItem(description: 'Monter', category: 'Categorie A'),
-        ChecklistItem(description: 'Descendree', category: 'Categorie B'),
-        ChecklistItem(description: 'Laver', category: 'Categorie C'),
-        ChecklistItem(description: 'Manger', category: 'Categorie B'),
-        ChecklistItem(description: 'Mordre', category: 'Categorie A'),
-        ChecklistItem(description: 'Dormir', category: 'Categorie A'),
-      ],
-    ),
-  ];
 
   @override
   State<CheckListsPage> createState() => _CheckListsPageState();
@@ -46,50 +18,47 @@ class _CheckListsPageState extends State<CheckListsPage> {
   @override
   Widget build(BuildContext context) {
 
+    final checkListNotifier = context.watch<CheckListNotifier>();
+
     return Scaffold(
-      appBar: AppBar(title: Text('Dynamic Checklist')),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
       body: ListView.builder(
-        itemCount: widget.checkList.length,
+        itemCount: checkListNotifier.checkLists.length,
         itemBuilder: (context, index) {
-          final checkList = widget.checkList[index];
-          return GestureDetector(
+          final checkList = checkListNotifier.checkLists[index];
+          return ListTile(
+            title: Text(checkList.title),
+            subtitle: checkList.items.isEmpty ? Text('0/0') :
+            Text(checkList.items.every((item) => (item.isDone)) ?
+              '${checkList.items.where((item) => item.isDone).length}/${checkList.items.length} Completed' :
+              '${checkList.items.where((item) => item.isDone).length}/${checkList.items.length}'),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ChecklistItemsPage(checklist: checkList),
-              ));
-              // Normalement le setState ici sert à reconstruire le widget quand on revient sur cette page pour prendre en compte les modifs
-              setState(() {});
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckListItemPage(checkList: checkList),
+                ),
+              );
             },
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    checkList.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  Icon(
-                    checkList.items.any((item) => !item.isDone)
-                        ? Icons.radio_button_unchecked
-                        : Icons.check_circle,
-                    color: checkList.items.any((item) => !item.isDone)
-                        ? Colors.grey
-                        : Colors.green,
-                  ),
-                ]
-              )
-            )
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          checkListNotifier.addCheckList(
+            checkListNotifier.checkLists,
+            CheckList(
+              id: checkListNotifier.checkLists.length + 1,
+              title: 'New Checklist',
+              items: [],
+            ),
+          );
+        },
+        tooltip: 'Add a new checklist',
+        child: const Icon(Icons.add),
       ),
     );
   }

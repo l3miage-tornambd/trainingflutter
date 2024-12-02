@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:projects/pages/ReorderableExample.dart';
 import 'package:projects/widgets/CustomBottomBar.dart';
+import 'package:provider/provider.dart';
+
+import 'models/CheckListNotifier.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (context) => CheckListNotifier(),
+        child: const MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +41,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CustomBottomBar(),
+      home: ReorderableExample(),
     );
   }
 }

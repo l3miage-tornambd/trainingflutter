@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:projects/pages/CheckListsPage.dart';
 import 'package:projects/pages/HomePage.dart';
 import 'package:projects/pages/NotamPage.dart';
+import 'package:projects/pages/ReorderableExample.dart';
+import 'package:provider/provider.dart';
+
+import '../models/CheckListNotifier.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({super.key});
@@ -23,6 +27,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       HomePage(title: 'Home Page'),
       CheckListsPage(title: 'Checklist'),
       NotamPage(url: 'https://sofia-briefing.aviation-civile.gouv.fr/sofia/pages/notamadminmenu.html',title: 'Sofia-Briefing Notam'),
+      ReorderableExample()
     ];
   }
 
@@ -34,6 +39,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: customBody[_selectedIndex],
@@ -54,7 +60,15 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             icon: Icon(Icons.notification_important),
             label: 'Notam',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Reorderable',
+          ),
         ],
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
       ),
     );
   }
