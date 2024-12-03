@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projects/pages/ReorderableExample.dart';
+import 'package:projects/pages/TestPage.dart';
 import 'package:projects/widgets/CustomBottomBar.dart';
 import 'package:provider/provider.dart';
 
-import 'models/CheckListNotifier.dart';
 
 void main() {
   runApp(
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ReorderableExample(),
+      home: TestPage(),
     );
   }
 }
