@@ -1,5 +1,7 @@
+/*
+
 import 'package:flutter/material.dart';
-import 'package:projects/models/CheckListNotifier.dart';
+import 'package:projects/providers/CheckListNotifier.dart';
 import 'package:projects/pages/CheckListItemPage.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +65,7 @@ class _CheckListsPageState extends State<CheckListsPage> {
     );
   }
 }
+*/
 
 
 

@@ -1,7 +1,8 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/CheckListNotifier.dart';
+import '../providers/CheckListNotifier.dart';
 
 class CheckListItemPage extends StatelessWidget {
   final CheckList checkList;
@@ -70,3 +71,4 @@ class CheckListItemPage extends StatelessWidget {
     );
   }
 }
+*/

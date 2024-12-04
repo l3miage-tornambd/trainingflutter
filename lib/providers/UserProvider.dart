@@ -1,0 +1,89 @@
+
+
+import 'package:flutter/material.dart';
+import '../models/CheckList.dart';
+import '../models/Drone.dart';
+import '../models/UserProfil.dart';
+
+class UserProvider extends ChangeNotifier {
+  UserProfil _user = UserProfil(
+    id: 1,
+    name: 'John Doe',
+    drones: [
+      Drone(
+        id: 1,
+        name: 'Drone 1',
+        model: 'Model 1',
+        checkList: CheckList(
+          id: 1,
+          title: 'My Checklist 1',
+          categories: [
+            Category(
+              name: 'Category A',
+              backgroundColor: Colors.white38,
+              items: [
+                Item(id: 101, description: 'Item 1', category: 'Category A'),
+                Item(id: 102, description: 'Item 2', category: 'Category A'),
+              ],
+            ),
+            Category(
+              name: 'Category B',
+              backgroundColor: Colors.white30,
+              items: [
+                Item(id: 201, description: 'Item 3', category: 'Category B'),
+                Item(id: 202, description: 'Item 4', category: 'Category B'),
+              ],
+            ),
+            Category(
+              name: 'Category C',
+              backgroundColor: Colors.white24,
+              items: [
+                Item(id: 301, description: 'Item 5', category: 'Category C'),
+                Item(id: 302, description: 'Item 6', category: 'Category C'),
+              ],
+            ),
+          ],
+        ),
+      ),
+      Drone(
+        id: 2,
+        name: 'Drone 2',
+        model: 'Model 2',
+        checkList: CheckList(
+          id: 2,
+          title: 'My Checklist 2',
+          categories: [
+            Category(
+              name: 'Category A',
+              backgroundColor: Colors.white38,
+              items: [
+                Item(id: 101, description: 'Item 1', category: 'Category A'),
+                Item(id: 102, description: 'Item 2', category: 'Category A'),
+              ],
+            ),
+            Category(
+              name: 'Category B',
+              backgroundColor: Colors.white30,
+              items: [
+                Item(id: 201, description: 'Item 3', category: 'Category B'),
+                Item(id: 202, description: 'Item 4', category: 'Category B'),
+              ],
+            ),
+            Category(
+              name: 'Category C',
+              backgroundColor: Colors.white24,
+              items: [
+                Item(id: 301, description: 'Item 5', category: 'Category C'),
+                Item(id: 302, description: 'Item 6', category: 'Category C'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+
+  UserProfil getUser() => _user;
+
+  List<Drone> getDrones() => _user.drones;
+}

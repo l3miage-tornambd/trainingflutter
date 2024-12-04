@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projects/pages/CheckListsPage.dart';
-import 'package:projects/pages/HomePage.dart';
+import 'package:projects/pages/VolPage.dart';
 import 'package:projects/pages/NotamPage.dart';
+
+import '../pages/DronePage.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({super.key});
@@ -20,8 +21,8 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     super.initState();
 
     customBody = [
-      HomePage(title: 'Home Page'),
-      CheckListsPage(title: 'Checklist'),
+      VolPage(title: 'Vol Page'),
+      DronePage(title: 'Drone Page'),
       NotamPage(url: 'https://sofia-briefing.aviation-civile.gouv.fr/sofia/pages/notamadminmenu.html',title: 'Sofia-Briefing Notam')
     ];
   }
@@ -44,12 +45,12 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.flight_outlined), // Icon pour l'avion
+            label: 'Vol',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.checklist),
-            label: 'Checklist',
+            icon: Icon(Icons.discord_rounded),
+            label: 'Drones',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notification_important),
