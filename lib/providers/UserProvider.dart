@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import '../models/CheckList.dart';
 import '../models/Drone.dart';
 import '../models/UserProfil.dart';
+import '../models/Vol.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProfil _user = UserProfil(
@@ -81,9 +80,41 @@ class UserProvider extends ChangeNotifier {
         ),
       ),
     ],
+    vols: [],
   );
 
   UserProfil getUser() => _user;
 
   List<Drone> getDrones() => _user.drones;
+
+
+  void addVol(Vol vol) {
+    _user.vols.add(vol);
+    notifyListeners();
+  }
+
+  void removeVol(Vol vol) {
+    _user.vols.remove(vol);
+    notifyListeners();
+  }
+
+  void addDrone(Drone drone) {
+    _user.drones.add(drone);
+    notifyListeners();
+  }
+
+  void removeDrone(Drone drone) {
+    _user.drones.remove(drone);
+    notifyListeners();
+  }
+
+  void updateDrone(Drone drone) {
+    final index = _user.drones.indexWhere((element) => element.id == drone.id);
+    _user.drones[index] = drone;
+    notifyListeners();
+  }
+
+
+
+
 }

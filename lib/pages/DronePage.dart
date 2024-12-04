@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/CheckList.dart';
+import '../models/Drone.dart';
 import '../providers/UserProvider.dart';
 
 class DronePage extends StatefulWidget {
@@ -24,51 +26,120 @@ class _DronePageState extends State<DronePage> {
         title: Text(widget.title),
       ),
       // Affiche la liste des drones du User
-      body: ListView.builder(
+      body: ReorderableListView.builder(
         itemCount: userProvider.getDrones().length,
+        onReorder: (oldIndex, newIndex) {
+          setState(() {
+            if (newIndex > oldIndex) newIndex--;
+            final Drone drone = userProvider.getDrones().removeAt(oldIndex);
+            userProvider.getDrones().insert(newIndex, drone);
+          });
+        },
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(userProvider.getDrones()[index].name ),
-            subtitle: Text(userProvider.getDrones()[index].model),
-            leading: Icon(Icons.discord_rounded),
+          return ReorderableDragStartListener(
+            key: ValueKey(userProvider.getDrones()[index]),
+            index: index,
+            child: ListTile(
+              title: Text(userProvider.getDrones()[index].name),
+              subtitle: Text(userProvider.getDrones()[index].model),
+              trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.blue),
+                      onPressed: () => userProvider.updateDrone(userProvider.getDrones()[index]),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () => userProvider.removeDrone(userProvider.getDrones()[index]),
+                    ),
+                    IconButton(
+                      // bouton pour déplacer rapidemnt un item
+                      icon: Icon(Icons.drag_handle, color: Colors.grey),
+
+                    )
+                  ]
+              ),
+            ),
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        userProvider.addDrone(Drone(id: userProvider.getDrones().length, name: "Drone ${userProvider.getDrones().length + 1}", model: "Model ${userProvider.getDrones().length + 1}", checkList: CheckList(id: userProvider.getDrones().length + 1, title: "Checklist ${userProvider.getDrones().length + 1}", categories: [])));
+      },
+      tooltip: 'Ajouter un drone',
+      child: const Icon(Icons.add),
+    ),
     );
   }
 }
 
 
 
+/*
+return Scaffold(
+  appBar: AppBar(
+    backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    title: Text(widget.title),
+  ),
+  // Affiche la liste des drones du User
+  body: ReorderableListView.builder(
+    itemCount: userProvider.getDrones().length + 1, // Augmenter le count pour inclure le bouton
+    onReorder: (oldIndex, newIndex) {
+      setState(() {
+        if (newIndex > oldIndex) newIndex--;
+        final Drone drone = userProvider.getDrones().removeAt(oldIndex);
+        userProvider.getDrones().insert(newIndex, drone);
+      });
+    },
+    itemBuilder: (context, index) {
+      // Vérifie si l'index est le dernier élément
+      if (index == userProvider.getDrones().length) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // Ajoutez votre logique pour ajouter un drone
+              userProvider.addDrone(Drone(name: "New Drone", model: "Model X"));
+            },
+            icon: Icon(Icons.add),
+            label: Text("Ajouter un drone"),
+          ),
+        );
+      }
+      return Container(
+        key: ValueKey(userProvider.getDrones()[index]), // Nécessaire pour ReorderableListView
+        color: index % 2 == 0
+            ? Colors.grey.shade200
+            : Colors.transparent, // Fond gris pour un sur deux
+        child: ListTile(
+          title: Text(userProvider.getDrones()[index].name),
+          subtitle: Text(userProvider.getDrones()[index].model),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: Icon(Icons.edit, color: Colors.blue),
+                onPressed: () => userProvider.updateDrone(userProvider.getDrones()[index]),
+              ),
+              IconButton(
+                icon: Icon(Icons.delete, color: Colors.red),
+                onPressed: () => userProvider.removeDrone(userProvider.getDrones()[index]),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+);
+
+
+
+ */
 
 /*
-import 'package:flutter/material.dart';
-
-class Drone {
-  String name;
-  String model;
-
-  Drone({required this.name, required this.model});
-}
-
-class DronesListPage extends StatefulWidget {
-  @override
-  _DronesListPageState createState() => _DronesListPageState();
-}
-
-class _DronesListPageState extends State<DronesListPage> {
-  List<Drone> drones = [
-    Drone(name: 'Drone 1', model: 'Model A'),
-    Drone(name: 'Drone 2', model: 'Model B'),
-    Drone(name: 'Drone 3', model: 'Model C'),
-    Drone(name: 'Drone 4', model: 'Model D'),
-  ];
-
-  void _deleteDrone(int index) {
-    setState(() {
-      drones.removeAt(index);
-    });
-  }
 
   void _editDrone(int index) {
     showDialog(
