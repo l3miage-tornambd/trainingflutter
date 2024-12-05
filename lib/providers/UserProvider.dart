@@ -98,7 +98,21 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addDrone(Drone drone) {
+  void addDrone(UserProfil userProfil) {
+    Drone drone = Drone(
+        id: userProfil.drones.length + 1,
+        name: "Drone ${userProfil.drones.length + 1}",
+        model: "Model ${userProfil.drones.length + 1}",
+        description: "Description ${userProfil.drones.length + 1}",
+        status: "Status ${userProfil.drones.length + 1}",
+        battery: "Battery ${userProfil.drones.length + 1}",
+        checkList: CheckList(
+            id: userProfil.drones.length + 1,
+            title: "Checklist ${userProfil.drones.length + 1}",
+            categories: []
+        )
+    );
+
     _user.drones.add(drone);
     notifyListeners();
   }
