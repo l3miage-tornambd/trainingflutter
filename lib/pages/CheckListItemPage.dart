@@ -1,74 +1,62 @@
-/*
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/CheckListNotifier.dart';
+import '../models/CheckList.dart';
+import '../models/Drone.dart';
+import '../providers/UserProvider.dart';
 
 class CheckListItemPage extends StatelessWidget {
   final CheckList checkList;
+  final Drone drone;
 
-  CheckListItemPage({required this.checkList});
+  CheckListItemPage({required this.checkList, required this.drone});
 
   @override
   Widget build(BuildContext context) {
-
-    final checkListNotifier = context.watch<CheckListNotifier>();
-
-    final itemsByCategory = <String, List<Item>>{};
-    for (var item in checkList.items) {
-      if (!itemsByCategory.containsKey(item.category)) {
-        itemsByCategory[item.category] = [];
-      }
-      itemsByCategory[item.category]!.add(item);
-    }
+    final userProvider = Provider.of<UserProvider>(context);
+    final checkList = drone.checkList;
 
     return Scaffold(
-      appBar: AppBar(title: Text(checkList.title)),
-      body: ReorderableListView.builder(
-        itemCount: checkList.items.length,
-        onReorder: (oldIndex, newIndex) {
-          checkListNotifier.reorderItems(checkList, oldIndex, newIndex);
-        },
-        itemBuilder: (context, index) {
-          final String category = itemsByCategory.keys.toList()[index];
-          final List<Item>? items = itemsByCategory[category];
-          return buildItem(checkListNotifier, category, items, checkList);
-        },
+      appBar: AppBar(
+        title: Text(checkList.title),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          checkListNotifier.addItem(
-            checkList,
-            Item(
-              id: ((checkList.id * 100) + checkList.items.length + 1),
-              description: 'Item ${checkList.items.length + 1}',
-              category: 'Category A')
+      body: ListView.builder(
+        itemCount: checkList.categories.length,
+        itemBuilder: (context, categoryIndex) {
+          final category = checkList.categories[categoryIndex];
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  category.name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: category.backgroundColor,
+                  ),
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: category.items.length,
+                itemBuilder: (context, itemIndex) {
+                  final item = category.items[itemIndex];
+
+                  return ListTile(
+                    title: Text(item.description),
+                  );
+                },
+              ),
+            ],
           );
         },
-        child: Icon(Icons.add),
       ),
-    );
-  }
-
-  Widget buildItem(CheckListNotifier checkListNotifier, String category, List<Item>? items, CheckList checkList) {
-    return ExpansionTile(
-      key: ValueKey(category),
-      title: Text(category),
-      children: items!.map((item) {
-        final itemIndex = checkList.items.indexOf(item);
-        return ReorderableDragStartListener(
-          key: ValueKey(item.id),
-          index: itemIndex,
-          child: CheckboxListTile(
-            title: Text(item.description),
-            value: item.isDone,
-            onChanged: (value) {
-              checkListNotifier.toggleItem(checkList, item);
-            },
-          ),
-        );
-      }).toList(),
     );
   }
 }
-*/
+

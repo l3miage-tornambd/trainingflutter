@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects/pages/TestPage.dart';
+import 'package:projects/providers/CheckListProvider.dart';
 import 'package:projects/providers/TimerProvider.dart';
 import 'package:projects/providers/UserProvider.dart';
 import 'package:projects/widgets/CustomBottomBar.dart';
@@ -12,6 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => TimerProvider()),
+        ChangeNotifierProvider(create: (context) => CheckListProvider()),
       ],
       child: const MyApp(),
     ),
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue.shade50),
         useMaterial3: true,
       ),
       home: CustomBottomBar(),

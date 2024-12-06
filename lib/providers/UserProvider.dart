@@ -13,6 +13,9 @@ class UserProvider extends ChangeNotifier {
         id: 1,
         name: 'Drone 1',
         model: 'Model 1',
+        description: 'Description 1',
+        status: 'Status 1',
+        battery: 'Battery 1',
         checkList: CheckList(
           id: 1,
           title: 'My Checklist 1',
@@ -21,24 +24,24 @@ class UserProvider extends ChangeNotifier {
               name: 'Category A',
               backgroundColor: Colors.white38,
               items: [
-                Item(id: 101, description: 'Item 1', category: 'Category A'),
-                Item(id: 102, description: 'Item 2', category: 'Category A'),
+                Item(id: 101, description: 'Item 1'),
+                Item(id: 102, description: 'Item 2'),
               ],
             ),
             Category(
               name: 'Category B',
               backgroundColor: Colors.white30,
               items: [
-                Item(id: 201, description: 'Item 3', category: 'Category B'),
-                Item(id: 202, description: 'Item 4', category: 'Category B'),
+                Item(id: 201, description: 'Item 3'),
+                Item(id: 202, description: 'Item 4'),
               ],
             ),
             Category(
               name: 'Category C',
               backgroundColor: Colors.white24,
               items: [
-                Item(id: 301, description: 'Item 5', category: 'Category C'),
-                Item(id: 302, description: 'Item 6', category: 'Category C'),
+                Item(id: 301, description: 'Item 5'),
+                Item(id: 302, description: 'Item 6'),
               ],
             ),
           ],
@@ -48,6 +51,9 @@ class UserProvider extends ChangeNotifier {
         id: 2,
         name: 'Drone 2',
         model: 'Model 2',
+        description: 'Description 2',
+        status: 'Status 2',
+        battery: 'Battery 2',
         checkList: CheckList(
           id: 2,
           title: 'My Checklist 2',
@@ -56,24 +62,24 @@ class UserProvider extends ChangeNotifier {
               name: 'Category A',
               backgroundColor: Colors.white38,
               items: [
-                Item(id: 101, description: 'Item 1', category: 'Category A'),
-                Item(id: 102, description: 'Item 2', category: 'Category A'),
+                Item(id: 101, description: 'Item 1'),
+                Item(id: 102, description: 'Item 2'),
               ],
             ),
             Category(
               name: 'Category B',
               backgroundColor: Colors.white30,
               items: [
-                Item(id: 201, description: 'Item 3', category: 'Category B'),
-                Item(id: 202, description: 'Item 4', category: 'Category B'),
+                Item(id: 201, description: 'Item 3'),
+                Item(id: 202, description: 'Item 4'),
               ],
             ),
             Category(
               name: 'Category C',
               backgroundColor: Colors.white24,
               items: [
-                Item(id: 301, description: 'Item 5', category: 'Category C'),
-                Item(id: 302, description: 'Item 6', category: 'Category C'),
+                Item(id: 301, description: 'Item 5'),
+                Item(id: 302, description: 'Item 6'),
               ],
             ),
           ],
@@ -98,21 +104,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addDrone(UserProfil userProfil) {
-    Drone drone = Drone(
-        id: userProfil.drones.length + 1,
-        name: "Drone ${userProfil.drones.length + 1}",
-        model: "Model ${userProfil.drones.length + 1}",
-        description: "Description ${userProfil.drones.length + 1}",
-        status: "Status ${userProfil.drones.length + 1}",
-        battery: "Battery ${userProfil.drones.length + 1}",
-        checkList: CheckList(
-            id: userProfil.drones.length + 1,
-            title: "Checklist ${userProfil.drones.length + 1}",
-            categories: []
-        )
-    );
-
+  void addDrone(Drone drone) {
     _user.drones.add(drone);
     notifyListeners();
   }
