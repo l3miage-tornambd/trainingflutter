@@ -33,7 +33,9 @@ class _VolPageState extends State<VolPage> {
             Text('Nombre de secondes écoulées: ${timerProvider.counter}'),
             if (timerProvider.isTimerRunning)
               ElevatedButton(
-                onPressed: timerProvider.stopTimer,
+                onPressed: () {
+                  checkListProvider.close();
+                  timerProvider.stopTimer();},
                 child: Text('Arrêter le timer'),
               )
             else

@@ -65,6 +65,34 @@ class _DroneCreatePageState extends State<DroneCreatePage> {
     }
   }
 
+  Future<void> _exportFile(CheckList checklist) async {
+    // Convertir l'objet CheckList en JSON
+    String jsonContent = json.encode(checklist.toJson());
+    print(jsonContent);
+
+    // Obtenir un chemin pour sauvegarder le fichier
+    String? outputPath = await FilePicker.platform.saveFile(
+      dialogTitle: 'Sauvegarder le fichier',
+      fileName: 'checklist.json',
+    );
+
+    if (outputPath != null) {
+      try {
+        File file = File(outputPath);
+        await file.writeAsString(jsonContent);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Fichier exporté avec succès : $outputPath')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'exportation : $e')),
+        );
+      }
+    }
+  }
+
+
+
   void handleMenuClick(int item) {
     switch (item) {
       case 1:
@@ -75,6 +103,7 @@ class _DroneCreatePageState extends State<DroneCreatePage> {
         _pickFile();
         break;
       case 3:
+        _exportFile(widget.drone!.checkList);
         // Exporter la checklist
         break;
     }

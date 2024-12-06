@@ -20,7 +20,13 @@ class CheckListProvider with ChangeNotifier {
   }
 
   void close() {
+    _currentCheckList = null;
     _isExpanded = false;
+    notifyListeners();
+  }
+
+  void updateCheckList(CheckList checkList) {
+    _currentCheckList = checkList;
     notifyListeners();
   }
 }

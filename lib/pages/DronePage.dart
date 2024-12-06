@@ -36,6 +36,7 @@ class _DronePageState extends State<DronePage> {
                 Text("Description: ${drone.description!}"),
               if (drone.status != null) Text("Status: ${drone.status!}"),
               if (drone.battery != null) Text("Battery: ${drone.battery!}"),
+              Text("Checklist: ${drone.checkList.title}"),
             ],
           ),
           actions: <Widget>[

@@ -13,13 +13,13 @@ class TimerProvider with ChangeNotifier {
 
   void startTimer() {
 
-    if (_isTimerRunning) return; // Éviter les doubles timers
+    if (_isTimerRunning) return;
 
     _isTimerRunning = true;
     _counter = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _counter++;
-      notifyListeners(); // Notifie les widgets utilisant ce provider
+      notifyListeners();
     });
   }
 
